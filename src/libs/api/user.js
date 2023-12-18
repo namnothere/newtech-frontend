@@ -32,6 +32,8 @@ export const login = async (username, password) => {
       data
     ).then((res) => {
       localStorage.setItem("accessToken", res?.data?.data?.token);
+      localStorage.setItem("refreshToken", res?.data?.data?.refreshToken);
+      localStorage.setItem("role", res?.data?.data?.user?.role);
     })
     } catch (error) {
       console.log(error);

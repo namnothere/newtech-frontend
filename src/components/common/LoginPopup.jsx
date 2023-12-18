@@ -7,15 +7,24 @@ import {
   Button,
 } from '@mui/material';
 import { login } from '../../libs/api/user';
+import { useNavigate } from 'react-router-dom';
 
 const LoginPopup = () => {
   const [open, setOpen] = useState(true);
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const navigate = useNavigate();
 
   const handleLogin = () => {
-    login(username, password);
-    handleClose();
+    login(username, password).then(() => {
+      handleClose();
+      const role = localStorage.getItem('role');
+      if (role === 'admin') {
+        navigate('/admin');
+      } else {
+        navigate('/');
+      }
+    })
   };
 
   const handleClose = () => {

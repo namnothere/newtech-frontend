@@ -4,10 +4,11 @@ import { useEffect } from "react";
 import Header from "../../components/layout/Header";
 import TableWrapper from "../../components/common/TableWrapper";
 import { DataGrid } from "@mui/x-data-grid";
-import { approveSubmission, rejectSubmisison, getSubmissions } from "../../libs/api/submission";
+import { rejectSubmisison, getSubmissions } from "../../libs/api/submission";
 import { toast } from "react-toastify";
+import AddCircleOutlineOutlinedIcon from "@mui/icons-material/AddCircleOutlineOutlined";
 
-const Submission = () => {
+const UserSubmission = () => {
   const [data, setData] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
   const [id, setId] = useState("");
@@ -73,23 +74,10 @@ const Submission = () => {
                 size="small"
                 onClick={() => {
                   setId(row.row.id)
-                  handleApprove(row.row.id);
+                  handleEdit(row.row.id);
                 }}
               >
-                Duyệt
-              </Button>
-  
-              <Button
-                color={"error"}
-                variant="contained"
-                size="small"
-                onClick={() => {
-                  setIsOpen(true);
-                  setId(row.row.id)
-                  handleReject(row.row.id);
-                }}
-              >
-                Từ chối
+                Chỉnh sửa
               </Button>
             </Box>
           );
@@ -98,22 +86,14 @@ const Submission = () => {
     },
   ];
 
-  const handleReject = async (id) => {
+  const handleEdit = async (id) => {
     try {
       await rejectSubmisison(id);
-      toast.success("Từ chối đăng kí thành công");
+      toast.success("Chỉnh sửa bài nộp thành công");
       await fetchData();
     } catch (error) {
       throw error;
     }
-  };
-
-  const handleApprove = async (id) => {
-    await approveSubmission(id);
-    toast.success("Duyệt đăng kí thành công");
-    await fetchData();
-    setIsOpen(false);
-    setId("");
   };
 
   const fetchData = async () => {
@@ -133,7 +113,16 @@ const Submission = () => {
     <Box m="20px">
       {/* HEADER */}
       <Box display="flex" justifyContent="space-between" alignItems="center">
-        <Header title="SUBMISSION REVIEWING" />
+        <Header title="REGISTER REVIEWING" />
+      </Box>
+
+      <Box display={"flex"} justifyContent={"flex-end"}>
+        <Button variant="contained" color="info" href="/create-topic">
+          <Box display={"flex"} alignItems={"center"} gap={1}>
+            <AddCircleOutlineOutlinedIcon />
+            <Typography>Nộp báo cáo đề tài</Typography>
+          </Box>
+        </Button>
       </Box>
 
       <TableWrapper>
@@ -147,4 +136,4 @@ const Submission = () => {
   );
 };
 
-export default Submission;
+export default UserSubmission;

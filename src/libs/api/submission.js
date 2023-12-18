@@ -40,13 +40,13 @@ export const rejectSubmisison = async (id) => {
   );
 };
 
-export const getTopicById = async (id) => {
-  return await Axios.get(
-    `${HOST_DOMAIN}/admin/research/topic/` + id,
-    {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    }
-  );
-};
+// export const userEditSubmission = async (payload) => {
+//   return await Axios.get(
+//     `${HOST_DOMAIN}/admin/research/topic-submission/review/edit?id=` + id,
+//     {
+//       headers: {
+//         Authorization: `Bearer ${token}`,
+//       },
+//     }
+//   );
+// }

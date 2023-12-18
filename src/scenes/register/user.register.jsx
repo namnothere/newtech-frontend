@@ -4,10 +4,12 @@ import { useEffect } from "react";
 import Header from "../../components/layout/Header";
 import TableWrapper from "../../components/common/TableWrapper";
 import { DataGrid } from "@mui/x-data-grid";
-import { approveSubmission, rejectSubmisison, getSubmissions } from "../../libs/api/submission";
+import { approveRegister, getRegisters, rejectRegister } from "../../libs/api/register";
+import ConfirmDelete from "../../components/common/ConfirmDelete";
 import { toast } from "react-toastify";
+import AddCircleOutlineOutlinedIcon from "@mui/icons-material/AddCircleOutlineOutlined";
 
-const Submission = () => {
+const Register = () => {
   const [data, setData] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
   const [id, setId] = useState("");
@@ -27,18 +29,26 @@ const Submission = () => {
       },
     },
     {
-      field: "filename",
-      headerName: "Tên File",
+      field: "registrant.full_name",
+      headerName: "Tên người đăng kí",
+      width: 300,
+      renderCell: (params) => {
+        return params.row.registrant?.full_name;
+      },
+    },
+    {
+      field: "expected_budget",
+      headerName: "Ngân sách",
       width: 200,
     },
     {
-      field: "path",
-      headerName: "Đường dẫn",
+      field: "expected_hours",
+      headerName: "Số giờ",
       width: 200,
     },
     {
-      field: "submission_date",
-      headerName: "Ngày nộp",
+      field: "registered_date",
+      headerName: "Ngày đăng kí",
       width: 200,
     },
     {
@@ -49,9 +59,9 @@ const Submission = () => {
         const label = row.row.approval_status?.toUpperCase();
 
         const color =
-          row.row?.approval_status === "rejected"
+          row.row?.approval_status == "rejected"
           ? "error"
-          : row.row?.approval_status === "approved"
+          : row.row?.approval_status == "approved"
           ? "success"
           : "default";
 
@@ -64,32 +74,16 @@ const Submission = () => {
       width: 300,
       renderCell: (row) => {
 
-        if (row.row?.approval_status === "pending") {
+        if (row.row?.approval_status == "pending") {
           return (
             <Box display={"flex"} alignItems={"center"} gap={2}>
               <Button
                 color="success"
                 variant="contained"
                 size="small"
-                onClick={() => {
-                  setId(row.row.id)
-                  handleApprove(row.row.id);
-                }}
+                href={`/registers/${row.row.id}`}
               >
-                Duyệt
-              </Button>
-  
-              <Button
-                color={"error"}
-                variant="contained"
-                size="small"
-                onClick={() => {
-                  setIsOpen(true);
-                  setId(row.row.id)
-                  handleReject(row.row.id);
-                }}
-              >
-                Từ chối
+                Chi tiết
               </Button>
             </Box>
           );
@@ -98,27 +92,9 @@ const Submission = () => {
     },
   ];
 
-  const handleReject = async (id) => {
-    try {
-      await rejectSubmisison(id);
-      toast.success("Từ chối đăng kí thành công");
-      await fetchData();
-    } catch (error) {
-      throw error;
-    }
-  };
-
-  const handleApprove = async (id) => {
-    await approveSubmission(id);
-    toast.success("Duyệt đăng kí thành công");
-    await fetchData();
-    setIsOpen(false);
-    setId("");
-  };
-
   const fetchData = async () => {
     try {
-      const res = await getSubmissions();
+      const res = await getRegisters();
       setData(res?.data?.data?.map((e, index) => ({ index: index + 1, ...e })));
     } catch (error) {
       console.log(error);
@@ -133,7 +109,7 @@ const Submission = () => {
     <Box m="20px">
       {/* HEADER */}
       <Box display="flex" justifyContent="space-between" alignItems="center">
-        <Header title="SUBMISSION REVIEWING" />
+        <Header title="REGISTER REVIEWING" />
       </Box>
 
       <TableWrapper>
@@ -147,4 +123,4 @@ const Submission = () => {
   );
 };
 
-export default Submission;
+export default Register;
