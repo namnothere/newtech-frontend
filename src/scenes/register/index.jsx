@@ -21,9 +21,12 @@ const Register = () => {
       width: 80,
     },
     {
-      field: "name",
+      field: "topic.name",
       headerName: "Tên đề tài",
       width: 300,
+      renderCell: (params) => {
+        return params.row.topic?.name;
+      },
     },
     {
       field: "expected_budget",
@@ -36,22 +39,23 @@ const Register = () => {
       width: 200,
     },
     {
-      field: "completion_status",
+      field: "registered_date",
+      headerName: "Ngày đăng kí",
+      width: 200,
+    },
+    {
+      field: "approval_status",
       headerName: "Trạng thái",
       width: 200,
       renderCell: (row) => {
-        const label =
-          row.params?.completion_status == "not_started"
-            ? "Not Start"
-            : row.params?.completion_status == "in_progress"
-            ? "In Progress"
-            : "Completed";
+        const label = row.row.approval_status?.toUpperCase();
+
         const color =
-          row.params?.completion_status == "error"
-            ? "Not Start"
-            : row.params?.completion_status == "in_progress"
-            ? "secondary"
-            : "success";
+          row.row?.approval_status == "rejected"
+          ? "error"
+          : row.row?.approval_status == "approved"
+          ? "success"
+          : "default";
 
         return <Chip label={label} color={color} size="small" />;
       },
@@ -61,39 +65,42 @@ const Register = () => {
       headerName: "Hành động",
       width: 300,
       renderCell: (row) => {
-        return (
-          <Box display={"flex"} alignItems={"center"} gap={2}>
-            <Button
-              color="success"
-              variant="contained"
-              size="small"
-              onClick={() => {
-                setId(row.row.id)
-                handleApprove(row.row.id);
-              }}
-            >
-              Duyệt
-            </Button>
 
-            <Button
-              color={"error"}
-              variant="contained"
-              size="small"
-              onClick={() => {
-                setIsOpen(true);
-                setId(row.row.id)
-                handleReject(row.row.id);
-              }}
-            >
-              Từ chối
-            </Button>
-          </Box>
-        );
+        if (row.row?.approval_status == "pending") {
+          return (
+            <Box display={"flex"} alignItems={"center"} gap={2}>
+              <Button
+                color="success"
+                variant="contained"
+                size="small"
+                onClick={() => {
+                  setId(row.row.id)
+                  handleApprove(row.row.id);
+                }}
+              >
+                Duyệt
+              </Button>
+  
+              <Button
+                color={"error"}
+                variant="contained"
+                size="small"
+                onClick={() => {
+                  setIsOpen(true);
+                  setId(row.row.id)
+                  handleReject(row.row.id);
+                }}
+              >
+                Từ chối
+              </Button>
+            </Box>
+          );
+        }
       },
     },
   ];
 
-  const handleReject = async () => {
+  const handleReject = async (id) => {
     try {
       await rejectRegister(id);
       toast.success("Từ chối đăng kí thành công");
@@ -103,7 +110,7 @@ const Register = () => {
     }
   };
 
-  const handleApprove = async () => {
+  const handleApprove = async (id) => {
     await approveRegister(id);
     toast.success("Duyệt đăng kí thành công");
     setIsOpen(false);
@@ -128,14 +135,6 @@ const Register = () => {
       {/* HEADER */}
       <Box display="flex" justifyContent="space-between" alignItems="center">
         <Header title="REGISTER REVIEWING" />
-      </Box>
-      <Box display={"flex"} justifyContent={"flex-end"}>
-        <Button variant="contained" color="info" href="/create-topic">
-          <Box display={"flex"} alignItems={"center"} gap={1}>
-            <AddCircleOutlineOutlinedIcon />
-            <Typography>Thêm mới đề tài</Typography>
-          </Box>
-        </Button>
       </Box>
 
       <TableWrapper>

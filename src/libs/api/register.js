@@ -1,7 +1,7 @@
 import Axios from "axios";
 
 const token =
-  "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im5lbSIsInN1YiI6IjNiZDE5YzUyLTE1MjItNDdhZi05MTEyLWI2MThiOTM1NTU0NCIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNzAyODMwNTE2LCJleHAiOjE3MDI4MzQxMTYsImlzcyI6IkF1dGhTZXJ2aWNlIn0.g7yxga2ZdwziUvF7c3ym2pn3ec76n5ax3FIWyka3J4Ltf1L-aBwWxmDV3GFLty-tcmmTO0zgouEHLyNPUZpG7A0R-_XeP2WnrB34s56xCXSxBt04xhfFu8_gsfRgdDxR_BUNfLgN2HolQsE_gl_BTdxArh52oQltXXBqaqDALIufGqM9vXoQZ-AzMaeccCfxzv3zvOkT3OlZ7aI8de9LjBFAuWlS-DFNi29WtnQRX47sB7YOlJO89tqcA-0IOQmVR4-JGIAanVGapx2Kuo39w0wn7QoIh-Wwvc8WzQ4reJeDL-x11V6Lto0Vm04GIZ-iaCGg6zLuyfXjO8vU-cCM9vCOq7V61COgJmjroeEadYtFczD0Tb0Fbm00ZmT_-33OL99Z2FryFOTVQx-kGV2bbjfW49Ioq2y_d8dnT4CMjESUN_um7SCMwYZkD9XZ1e7OLjRs52_3cmDAS2s05APkTLQGRAjcPKnngtl-I8CO5z_051HZaNAcdZVV80QRFTRCQdyvBYc06XRta51bgtCCUtlDYwFwrIc9eSHBGZ1ycWHaII3fNBbJaM6yKXWacaLd-jOe8fWolxMFfPkHhU1gFqksmR-isqJV5xFHCsICNoQY_aOPavKxGSnpLW8kxnUZODA2rRTJNDTthOBl39G8JIWlLnAlRq1baZq33bWYgIU";
+  "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im5lbSIsInN1YiI6IjNiZDE5YzUyLTE1MjItNDdhZi05MTEyLWI2MThiOTM1NTU0NCIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNzAyODg0NzE0LCJleHAiOjE3MDI5MjA3MTQsImlzcyI6IkF1dGhTZXJ2aWNlIn0.bnz2EYNz_3kFWoQRULqCRg_625jBOM9ljwmHGJe9HMZRaza-ANMX-zZc7bgUSud8L3laHBVNuOKhos6vVy0VttaeUScy_w4r3D2e3t7OLJaVTkd0uxC8CTLWD788WO5V-n4tGS3w3K46B0JLNe_Lo0O82tv7uGfxtsHUO4bAg9Vp9BgLmeqaXyhqArDepZ45_2M3iO2lzSgPMsaTE5oQ4nrbvsNrlNM-mOBSAdpilpglVpU3YSsi3zkmREHvoTRqZ8h5x79m15alTJYTX_XDYrwgZ8Uoj3SIsN-LCZVIT-0WT1lvdaTv5brGNlrBq77Bw6yetJTxraxfy79gLTtg5ofc1Wmb4_-Zs-TKZV9yFpJ9T-B7-AF7T3XcRbVAmamOVu5he9FTBMrnAI5wT7UmuyHNB3yuqjAhOcjkyqkIPjAJN7fN9g9bvgOL4gHgmt4Gi6N1Z36MdFiEwZ5YD8jjiW8w-wjOJk-KUqDvoufTeDxKmpniys6RSCkPng-3qxFQ434DiywT6lTPLq99f6TtZsVks_NCmqEHBfD1Ko6mDejWjztWJeEh8z1iV8pkTi4v7y4fAeFx84WgaM7gAjTI8dmhdFn6LtCvLng0ZXYPAtHk6sZoqp4qBUCpv5HvYfYIjagK7JaNbkl8uIKL1Pv2c4LP-i_qXFq4c7OgyMX_S9A";
 
 export const getRegisters = async () => {
   return await Axios.get(
@@ -25,10 +25,9 @@ export const approveRegister = async (id) => {
   );
 };
 
-export const rejectRegister = async (payload) => {
-  return await Axios.post(
-    "https://newtech-api.vercel.app/api/v1/admin/research/topic-registration/review/reject?id=",
-    payload,
+export const rejectRegister = async (id) => {
+  return await Axios.get(
+    "https://newtech-api.vercel.app/api/v1/admin/research/topic-registration/review/reject?id=" + id,
     {
       headers: {
         Authorization: `Bearer ${token}`,
