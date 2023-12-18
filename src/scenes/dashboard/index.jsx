@@ -67,7 +67,7 @@ const Dashboard = () => {
               color="success"
               variant="contained"
               size="small"
-              href={`/topic/${row.row.id}`}
+              href={`/admin/topic/${row.row.id}`}
             >
               Chi tiết
             </Button>
@@ -125,7 +125,7 @@ const Dashboard = () => {
         <Header title="DASHBOARD" />
       </Box>
       <Box display={"flex"} justifyContent={"flex-end"}>
-        <Button variant="contained" color="info" href="/create-topic">
+        <Button variant="contained" color="info" href="/admin/create-topic">
           <Box display={"flex"} alignItems={"center"} gap={1}>
             <AddCircleOutlineOutlinedIcon />
             <Typography>Thêm mới đề tài</Typography>

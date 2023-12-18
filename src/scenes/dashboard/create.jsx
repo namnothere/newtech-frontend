@@ -19,7 +19,7 @@ const CreateTopic = () => {
         approved_hours: Number(values.approved_hours),
       });
       toast.success("Thêm mới thành công");
-      navigate("/");
+      navigate("/admin");
     } catch (error) {
       console.log(error);
     }

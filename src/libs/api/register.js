@@ -52,9 +52,9 @@ export const registerTopic = async (payload) => {
   );
 }
 
-export const updateRegisterTopic = async (id, payload) => {
+export const updateRegisterTopic = async (payload) => {
   return await Axios.patch(
-    `${HOST_DOMAIN}/research/topic-registration/` + id,
+    `${HOST_DOMAIN}/research/topic-registration/` + payload.topicId,
     payload,
     {
       headers: {

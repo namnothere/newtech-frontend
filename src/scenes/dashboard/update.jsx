@@ -35,7 +35,7 @@ const Update = () => {
       approved_hours: Number(values.approved_hours),
     });
     toast.success("Cập nhật thông tin thành công");
-    navigate("/");
+    navigate("/admin");
   };
 
   useEffect(() => {

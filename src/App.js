@@ -1,4 +1,4 @@
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, useNavigate } from "react-router-dom";
 import Sidebar from "./scenes/global/Sidebar";
 import UserSidebar from "./scenes/global/UserSidebar";
 import { CssBaseline, ThemeProvider } from "@mui/material";
@@ -21,12 +21,24 @@ function App() {
   const [theme, colorMode] = useMode();
   const [accessToken, setAccessToken] = useState(localStorage.getItem("accessToken"));
   const [role, setRole] = useState(localStorage.getItem("role"));
+  const navigate = useNavigate();
   
   const checkAccessToken = () => {
     const localAccessToken = localStorage.getItem("accessToken");
     const localRole = localStorage.getItem("role");
-    if (accessToken) setAccessToken(localAccessToken);
-    else setAccessToken(null);
+    if (accessToken) {
+      if (!window.location.pathname.includes('/admin') && localRole === 'admin') {
+        navigate('/admin');
+      }
+      else if (localRole === 'user' && window.location.pathname.includes('/admin')) {
+        navigate('/');
+      }
+      setAccessToken(localAccessToken);
+
+    }
+    else {
+      setAccessToken(null)
+    };
 
     if (role) setRole(localRole);
     else setRole(null);
@@ -47,7 +59,6 @@ function App() {
           }
 
           {role === 'admin' ? <Sidebar /> : <UserSidebar />}
-          {/* redirect to dashboard if user is admin */}
 
           <main className="content">
             <Routes>

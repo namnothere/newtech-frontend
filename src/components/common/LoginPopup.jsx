@@ -20,6 +20,7 @@ const LoginPopup = () => {
       handleClose();
       const role = localStorage.getItem('role');
       if (role === 'admin') {
+        window.location.reload();
         navigate('/admin');
       } else {
         navigate('/');

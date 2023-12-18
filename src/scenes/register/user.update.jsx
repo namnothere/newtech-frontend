@@ -1,10 +1,7 @@
 import {
   Box,
   Button,
-  RadioGroup,
   TextField,
-  FormControlLabel,
-  Radio,
 } from "@mui/material";
 import { Formik } from "formik";
 import * as yup from "yup";
@@ -24,13 +21,12 @@ const UserRegisterUpdate = () => {
     expected_budget: "",
     expected_hours: "",
     completion_status: "in_progress",
-    // activityId: "09743399-b536-41f1-9c82-b6c21fefaafb",
   });
 
   const handleFormSubmit = async (values) => {
-    console.log(values);
-    await updateRegisterTopic(id, {
+    await updateRegisterTopic({
       ...values,
+      topicId: id,
       expected_budget: Number(values.expected_budget),
       expected_hours: Number(values.expected_hours),
     });
@@ -57,7 +53,6 @@ const UserRegisterUpdate = () => {
         enableReinitialize={true}
         onSubmit={handleFormSubmit}
         initialValues={initialValues}
-        validationSchema={checkoutSchema}
       >
         {({
           values,
@@ -97,7 +92,7 @@ const UserRegisterUpdate = () => {
                 onBlur={handleBlur}
                 onChange={handleChange}
                 value={values.expected_hours}
-                name="approved_hours"
+                name="expected_hours"
                 error={!!touched.expected_hours && !!errors.expected_hours}
                 helperText={touched.expected_hours && errors.expected_hours}
                 sx={{ gridColumn: "span 2" }}
@@ -114,9 +109,5 @@ const UserRegisterUpdate = () => {
     </Box>
   );
 };
-
-const checkoutSchema = yup.object().shape({
-  name: yup.string().required("Không được để trống"),
-});
 
 export default UserRegisterUpdate;
