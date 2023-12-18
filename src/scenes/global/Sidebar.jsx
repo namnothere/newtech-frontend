@@ -1,27 +1,43 @@
 import { useState } from "react";
 import { ProSidebar, Menu, MenuItem } from "react-pro-sidebar";
 import { Box, IconButton, Typography, useTheme } from "@mui/material";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import "react-pro-sidebar/dist/css/styles.css";
 import { tokens } from "../../theme";
 import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
 import ExitToAppOutlinedIcon from "@mui/icons-material/ExitToAppOutlined";
 import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
-import { useCookies } from "react-cookie";
 import ReceiptOutlinedIcon from "@mui/icons-material/ReceiptOutlined";
-import CalendarMonthOutlinedIcon from "@mui/icons-material/CalendarMonthOutlined";
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
+import { logout } from "../../libs/api/user";
 
-const Item = ({ title, to, icon, selected, setSelected }) => {
+const Item = ({ title, to, icon, selected, setSelected, onClickFunc }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+
+  if (onClickFunc) {
+    return (
+      <MenuItem
+        active={selected === title}
+        style={{
+          color: colors.grey[100],
+        }}
+        onClick={() => onClickFunc()} 
+        icon={icon}
+      >
+        <Typography>{title}</Typography>
+        {to && <Link to={to} />}
+      </MenuItem>
+    );
+  }
+
   return (
     <MenuItem
       active={selected === title}
       style={{
         color: colors.grey[100],
       }}
-      onClick={() => setSelected(title)}
+      onClick={() => setSelected(title)} 
       icon={icon}
     >
       <Typography>{title}</Typography>
@@ -29,6 +45,13 @@ const Item = ({ title, to, icon, selected, setSelected }) => {
     </MenuItem>
   );
 };
+
+const logoutFunc = () => {
+  logout().then(() => {
+    localStorage.removeItem("accessToken");
+    window.location.reload();
+  });
+}
 
 const Sidebar = () => {
   const theme = useTheme();
@@ -130,6 +153,13 @@ const Sidebar = () => {
               icon={<ReceiptOutlinedIcon />}
               selected={selected}
               setSelected={setSelected}
+            />
+            <Item
+              title="Thoát"
+              icon={<ExitToAppOutlinedIcon />}
+              selected={selected}
+              setSelected={setSelected}
+              onClickFunc={logoutFunc}
             />
           </Box>
         </Menu>

@@ -111,6 +111,7 @@ const Submission = () => {
   const handleApprove = async (id) => {
     await approveSubmission(id);
     toast.success("Duyệt đăng kí thành công");
+    await fetchData();
     setIsOpen(false);
     setId("");
   };

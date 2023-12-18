@@ -29,6 +29,14 @@ const Register = () => {
       },
     },
     {
+      field: "registrant.full_name",
+      headerName: "Tên người đăng kí",
+      width: 300,
+      renderCell: (params) => {
+        return params.row.registrant?.full_name;
+      },
+    },
+    {
       field: "expected_budget",
       headerName: "Ngân sách",
       width: 200,
@@ -113,6 +121,7 @@ const Register = () => {
   const handleApprove = async (id) => {
     await approveRegister(id);
     toast.success("Duyệt đăng kí thành công");
+    await fetchData();
     setIsOpen(false);
     setId("");
   };

@@ -1,0 +1,1 @@
+export const HOST_DOMAIN = 'https://newtech-api.vercel.app/api/v1';

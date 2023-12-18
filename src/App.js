@@ -7,9 +7,24 @@ import Register from "./scenes/register";
 import Submission from "./scenes/submission";
 import CreateTopic from "./scenes/dashboard/create";
 import Update from "./scenes/dashboard/update";
+import LoginPopup from "./components/common/LoginPopup";
+import { useEffect, useState } from "react";
+
+
 
 function App() {
   const [theme, colorMode] = useMode();
+  const [accessToken, setAccessToken] = useState(localStorage.getItem("accessToken"));
+  
+  const checkAccessToken = () => {
+    const localAccessToken = localStorage.getItem("accessToken");
+    if (accessToken) setAccessToken(localAccessToken);
+    else setAccessToken(null);
+  };
+  
+  useEffect(() => {
+    checkAccessToken();
+  }, []);
 
   return (
     <ColorModeContext.Provider value={colorMode}>
@@ -25,6 +40,11 @@ function App() {
               <Route path="/registers" element={<Register />} />
               <Route path="/submissions" element={<Submission />} />
             </Routes>
+
+            {
+              !accessToken && 
+              <LoginPopup />
+            }
           </main>
         </div>
       </ThemeProvider>
