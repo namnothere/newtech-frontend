@@ -37,7 +37,7 @@ const Update = () => {
     toast.success("Cập nhật thông tin thành công");
     navigate("/admin");
   };
-
+  
   useEffect(() => {
     const getInfo = async (id) => {
       const res = await getTopicById(id);
